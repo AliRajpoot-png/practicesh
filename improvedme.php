@@ -4,11 +4,13 @@ $username = "root";
 $password = "";
 $database = "as";
 
+
 $conn = mysqli_connect($servername, $username, $password, $database);
 if (!$conn) {
     die("your request is not found" . mysqli_connect_error());
 }
 
+//$_POST ek array hai jisme form ka data aata hai. Key wohi hoti hai jo input ke name="..." mein likhi ho. name="Name" wale input ki value $_POST["Name"] mein milegi.
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $Name = $_POST["Name"];
@@ -17,6 +19,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $Board = $_POST["Board"];
     $Contact = $_POST["Contact"];
     $Description = $_POST["Description"];
+
+//Pehli line SQL query ka text banati hai: table ali mein nayi row daalo. Columns ki tarteeb aur values ki tarteeb same honi chahiye (aapki hai). Doosri line wo query database par chala deti hai.
 
     $sql = "INSERT INTO `ali` (`Name`, `Class`, `School`, `Board`, `Contact`, `Description`)
             VALUES ('$Name', '$Class', '$School', '$Board', '$Contact', '$Description')";
@@ -89,12 +93,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <h1 class="h5 mb-0">Add A Student Details</h1>
             </div>
             <div class="card-body p-4">
-                <?php if (isset($_GET['success'])) {
-                    echo "<script>
-        alert('Data submitted successfully!');
-    </script>";
-                }
-                ?>
                 <form action="/practicesh/improvedme.php" method="POST">
                     <div class="row g-3">
                         <div class="col-md-6">
@@ -158,6 +156,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <?php
                         $sql = "SELECT * FROM `ali`";
                         $result = mysqli_query($conn, $sql);
+                        //Yeh loop har baar ek row nikalta hai, jab tak rows khatam na ho jayein. $row ek array hai, jaise $row['Name'] mein us row ka naam hoga.
                         while ($row = mysqli_fetch_assoc($result)) {
                             echo "<tr>
                                 <th scope='row'>" . $row['Id'] . "</th>
